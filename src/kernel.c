@@ -42,7 +42,7 @@ void knl__thread_usb(void *arg)
 int main(void)
 {
     k__init();
-    k__printf("\r\nStarting OS-3o3...");
+    k__printf("\r\nStarting Swiss Operating System...");
 
     mmu__init();
     pci__init();
@@ -55,7 +55,7 @@ int main(void)
     rtos__thread_create("USB", knl__thread_usb, NULL, 100, 40000);
 
     rtos__start();
-    k__printf("End 32gears...\n");
+    k__printf("End of Swiss OS...\n");
     while (1)
     {
         k__printf(".");
