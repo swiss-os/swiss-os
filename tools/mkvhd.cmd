@@ -5,13 +5,13 @@ goto :CMDENTRY
 
 echo "========== Linux ${SHELL} ================="
 
-./parted.exe --boot ./mbr.bin  mkpart 0x80,0x0b,32,95641 ./32gears.vhd
+./parted.exe --boot ./mbr.bin  mkpart 0x80,0x0c,32,95641 ./32gears.vhd
 ./mkdosfs.exe --boot ./vbr.bin  --blocks 47820 --offset 32  -n "OS-3o3" ./32gears.vhd	
 cp ../src/i386/32gears.vmx  ./32gears.vmx
 cp ../src/amd64/64gears.vmx  ./64gears.vmx
+cp ../non-free/secureboot/vmware.org vmware.vmx
 
 ./vhd_cp.exe ../bin/io.sys vhd://../bin/32gears.vhd:/io.sys 
-./vhd_cp.exe ../bin/bootx64.efi vhd://../bin/32gears.vhd:/efi/boot/bootx64.efi
 
 
 ./vhd_cp.exe ../non-free/rpifirmware/boot/LICENSE.broadcom vhd://../bin/32gears.vhd:/LICENSE.broadcom
@@ -27,6 +27,13 @@ cp ../src/amd64/64gears.vmx  ./64gears.vmx
 ./vhd_cp.exe ../src/rpi400/config.txt vhd://../bin/32gears.vhd:/config.txt
 ./vhd_cp.exe ../bin/kernel8.img vhd://../bin/32gears.vhd:/kernel8.img
 
+
+./vhd_cp.exe ../bin/bootx64.efi vhd://../bin/32gears.vhd:/efi/boot/grubx64_real.efi
+./vhd_cp.exe ../non-free/secureboot/grub.efi vhd://../bin/32gears.vhd:/efi/boot/grub.efi
+./vhd_cp.exe ../non-free/secureboot/BOOTX64.EFI vhd://../bin/32gears.vhd:/efi/boot/BOOTX64.EFI
+./vhd_cp.exe ../non-free/secureboot/MokManager.efi vhd://../bin/32gears.vhd:/efi/boot/MokManager.efi
+./vhd_cp.exe ../non-free/secureboot/COPYING vhd://../bin/32gears.vhd:/COPYING.ventoy
+./vhd_cp.exe ../non-free/secureboot/ENROLL_THIS_KEY_IN_MOKMANAGER.cer vhd://../bin/32gears.vhd:/ENROLL_THIS_KEY_IN_MOKMANAGER.cer
 
 exit $?
 :CMDENTRY

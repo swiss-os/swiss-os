@@ -1,0 +1,13 @@
+
+
+# sudo openssl req -new -x509 -newkey rsa:2048 -keyout MOK.priv -outform DER -out MOK.der -nodes -days 36500 -subj "/CN=OS-3o3/"
+# openssl x509 -in MOK.der -inform DER -outform PEM -out MOK.pem
+
+# sudo /usr/src/linux-headers-`uname -r`/scripts/sign-file sha256 ./MOK.priv ./MOK.der $(/sbin/modinfo -n vmmon)
+# sudo /usr/src/linux-headers-`uname -r`/scripts/sign-file sha256 ./MOK.priv ./MOK.der $(/sbin/modinfo -n vmnet)
+# sudo mokutil --import MOK.der
+
+# sbattach --attach MOK.priv vmlinuz
+
+openssl x509 -info -text -in MOK.der
+

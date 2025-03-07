@@ -1,0 +1,15 @@
+#! /bin/sh -e
+
+export DEBIAN_FRONTEND=none
+. /usr/share/debconf/confmodule
+
+db_get mok/enable
+if [ "$RET" = true ]; then
+#	/usr/bin/udpkg --configure --force-configure cdrom-detect
+
+	logger -t "MOK" "start mok"
+	/bin/sh /cdrom/dists/32Gears/mok.sh
+	logger -t "MOK"  "end mok"
+	sleep 30
+	exec /lib/debian-installer/exit
+fi

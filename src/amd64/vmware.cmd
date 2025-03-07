@@ -1,0 +1,3 @@
+
+vmware -x vmware.vmx
+
