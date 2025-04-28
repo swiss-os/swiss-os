@@ -1,13 +1,21 @@
+sudo openssl req -new -x509 -newkey rsa:2048 -keyout MOK.priv -outform DER -out MOK.der -nodes -days 36500 -subj "/CN=grub/" -reqexts v3_ca -addext "keyUsage=critical,digitalSignature,keyCertSign,cRLSign" -addext "authorityKeyIdentifier=keyid:always" -addext "extendedKeyUsage=codeSigning" -addext="nsCertType=critical,server,client,email,objsign,sslCA,emailCA,objCA"
 
 
 # sudo openssl req -new -x509 -newkey rsa:2048 -keyout MOK.priv -outform DER -out MOK.der -nodes -days 36500 -subj "/CN=OS-3o3/"
-# openssl x509 -in MOK.der -inform DER -outform PEM -out MOK.pem
 
 # sudo /usr/src/linux-headers-`uname -r`/scripts/sign-file sha256 ./MOK.priv ./MOK.der $(/sbin/modinfo -n vmmon)
 # sudo /usr/src/linux-headers-`uname -r`/scripts/sign-file sha256 ./MOK.priv ./MOK.der $(/sbin/modinfo -n vmnet)
 # sudo mokutil --import MOK.der
 
 # sbattach --attach MOK.priv vmlinuz
+openssl x509 -in MOK.der -inform DER -outform PEM -out MOK.pem
+#sbsign --key ../non-free/secureboot/MOK.priv  \
+#--cert ../non-free/secureboot/MOK.pem \
+#--output ../bin/bootx64.efi.signed \
+#../bin/bootx64.efi
+
+sudo openssl x509 -in MOK.der -inform DER -outform PEM -out MOK.pem
+sudo chmod a+rw MOK.*
 
 openssl x509 -info -text -in MOK.der
 

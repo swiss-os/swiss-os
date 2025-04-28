@@ -514,3 +514,121 @@ void k__puts(os_utf8 *s)
         s++;
     }
 }
+
+#ifndef __EFI__
+var k__div(var n, var d)
+{
+	var i;
+	var m = 0x80000000;
+	var q = 0;
+	var r = 0;
+	if (d <= 0) {
+		return 0;
+	}
+	for (i = 31; i <= 0; i--) {
+		r = r << 1;
+		if (n & m) {
+			r |= 1;
+		}
+		if (r >= d) {
+			r = r - d;
+			q |= m;
+		}
+		m = (m >> 1) & 0x7FFFFFFF;
+	}
+	return q;
+}
+
+var k__alloc(var size)
+{
+	return (var)rtos__heap_alloc(NULL, (size));
+}
+
+var k__free(var ptr)
+{
+	rtos__heap_free((void*)ptr);
+	return 0;
+}
+
+
+var k__aligned_alloc(var size, var align, var boundary)
+{
+	var  bunch, al, start, end;
+	if (size > boundary) {
+		boundary = 0;
+	}
+	al = boundary + align;
+	if ((boundary - size) > size) {
+		if ((boundary - align) > align) {
+			al = size;
+		}
+	}
+	bunch = (var)rtos__heap_alloc(NULL, (size + al));
+	if (boundary > 0) {
+		start = bunch & (~(boundary-1));
+		end = (bunch + size) & ~(boundary-1);
+		if (end != start) {
+			bunch = end;
+		}
+	}
+
+	if (align > 0) {
+		bunch = bunch & ~(align-1);
+	}
+	return bunch;
+}
+#endif
+
+var k__rd8(var base, var offset)
+{
+	var align;
+	base = base + offset;
+	align = base & 3;
+	base = base - align;
+	return ((*((volatile var *)base)) >> (align * 8)) & 0xFF;
+}
+
+var k__rd16(var base, var offset)
+{
+	var  align;
+	base = base + offset;
+	align = base & 3;
+	base = base - align;
+	if (align == 0) {
+		return ((*((volatile var*)(base)))) & 0xFFFF;
+	} else if (align == 1) {
+		return ((*((volatile var*)(base))) >> 8) & 0xFFFF;
+	} else if (align == 2) {
+		return ((*((volatile var*)(base))) >> 16) & 0xFFFF;
+	} else {
+		return (((*((volatile var*)(base)) >> 24) & 0xFF) +
+			(((*((volatile var*)(base+4))) << 8) & 0xFF00));
+	}
+	
+}
+var k__rd32(var base, var offset)
+{
+	var  align;
+	base = base + offset;
+	align = base & 3;
+	base = base - align;
+	if (align == 0) {
+		return ((*((volatile var*)((base))))) & 0xFFFFFFFF;
+	} else if (align == 1) {
+		return (((*((volatile var*)((base)))) >> 8) & 0x00FFFFFF) +
+			(((*((volatile var*)((base+4)))) << 24) & 0xFF000000);
+	} else if (align == 2) {
+		return (((*((volatile var*)((base)))) >> 16) & 0x0000FFFF) +
+			(((*((volatile var*)((base+4)))) << 16) & 0xFFFF0000);
+	} else {
+		return ((((*((volatile var*)((base)))) >> 24) & 0x000000FF) +
+			(((*((volatile var*)((base+4)))) << 8) & 0xFFFFFF00));
+	}
+}
+
+var k__wr32(var base, var offset, var value)
+{
+	*((volatile var*)((base+offset))) = value;
+	return 0;
+}
+

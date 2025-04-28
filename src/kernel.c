@@ -43,6 +43,7 @@ int main(void)
 {
     k__init();
     k__printf("\r\nStarting Swiss Operating System...");
+    k__printf("\r\nStarting OS-3o3...");
 
     mmu__init();
     pci__init();

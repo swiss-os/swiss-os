@@ -28,12 +28,21 @@ cp ../non-free/secureboot/vmware.org vmware.vmx
 ./vhd_cp.exe ../bin/kernel8.img vhd://../bin/32gears.vhd:/kernel8.img
 
 
-./vhd_cp.exe ../bin/bootx64.efi vhd://../bin/32gears.vhd:/efi/boot/grubx64_real.efi
+./vhd_cp.exe ../bin/bootx64.efi vhd://../bin/32gears.vhd:/efi/boot/bootx64.efi
+./vhd_cp.exe ../bin/bootx64.efi vhd://../bin/32gears.vhd:/efi/boot/bootx64_real.efi
+
+#sbsign --key ../non-free/secureboot/MOK.priv  \
+#--cert ../non-free/secureboot/MOK.pem \
+#--output ../bin/bootx64.efi.signed \
+#../bin/bootx64.efi
+
+#./vhd_cp.exe ../bin/bootx64.efi.signed vhd://../bin/32gears.vhd:/efi/boot/grub.efi
 ./vhd_cp.exe ../non-free/secureboot/grub.efi vhd://../bin/32gears.vhd:/efi/boot/grub.efi
-./vhd_cp.exe ../non-free/secureboot/BOOTX64.EFI vhd://../bin/32gears.vhd:/efi/boot/BOOTX64.EFI
-./vhd_cp.exe ../non-free/secureboot/MokManager.efi vhd://../bin/32gears.vhd:/efi/boot/MokManager.efi
-./vhd_cp.exe ../non-free/secureboot/COPYING vhd://../bin/32gears.vhd:/COPYING.ventoy
+./vhd_cp.exe ../non-free/secureboot/BOOTX64.EFI vhd://../bin/32gears.vhd:/efi/boot/BOOTX64_SECURE_BOOT.EFI
+#./vhd_cp.exe ../non-free/secureboot/MokManager.efi vhd://../bin/32gears.vhd:/efi/boot/MokManager.efi
+#./vhd_cp.exe ../non-free/secureboot/COPYING vhd://../bin/32gears.vhd:/COPYING.ventoy
 ./vhd_cp.exe ../non-free/secureboot/ENROLL_THIS_KEY_IN_MOKMANAGER.cer vhd://../bin/32gears.vhd:/ENROLL_THIS_KEY_IN_MOKMANAGER.cer
+#./vhd_cp.exe ../non-free/secureboot/MOK.der vhd://../bin/32gears.vhd:/ENROLL_THIS_KEY_.cer
 
 exit $?
 :CMDENTRY

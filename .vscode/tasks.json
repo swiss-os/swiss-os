@@ -47,7 +47,7 @@
             }
         },
 	{
-            "label": "make ac90",
+            "label": "make_ac90",
             "type": "shell",
             "linux": {
                 "command": "clang",
@@ -435,6 +435,7 @@
                 "../src/kernel.c",
                 "../src/rtos.c",
                 "../src/xhci.c",
+                "../src/usb.c",
                 "-o",
                 "io32.elf"
             ],
@@ -504,6 +505,7 @@
                 "../src/kernel.c",
                 "../src/rtos.c",
                 "../src/xhci.c",
+                "../src/usb.c",
                 "../src/klib.c",
                 "../src/rpi400/dma.c",
                 "../src/rpi400/pci.c",
@@ -677,7 +679,7 @@
             },
             "dependsOrder": "sequence",
             "dependsOn": [
-		"make ac90",
+		"make_ac90",
                 "make_diff",
                 "make obj2bin",
                 "make bin2hex",
