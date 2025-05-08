@@ -23,6 +23,6 @@ https://www.microsoft.com/en-us/windows
 https://www.apple.com/macos
 
 
-https://consumer.huawei.com/en/harmonyos/
+https://repo.huaweicloud.com/harmonyos/os/5.1.0-Release/
 
 
