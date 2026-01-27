@@ -1,3 +1,0 @@
-ata0-master: type=disk, mode=flat, path="build/disk.vhd", cylinders=0'
-boot: disk
-
