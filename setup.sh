@@ -6,7 +6,8 @@ mv -f initramfs-* initramfs.img
 mv -f symvers-* symvers.xz
 mv -f System.map-* System.map
 
-sudo cp /boot/efi/EFI/fedora/grubx64.efi grubx64_real.efi
+echo https://packages.debian.org/trixie/amd64/grub-efi-amd64-unsigned/download
+#sudo cp /boot/efi/EFI/fedora/grubx64.efi .
 sudo chmod a+rw grub*.efi
 
 dd if=/dev/zero of=disk.img bs=1024k seek=7000 count=0
@@ -31,7 +32,7 @@ w
 
 END
 
-mkdosfs --offset 2048 disk.img
+mkdosfs -n OS303 --offset 2048 disk.img
 
 mkdir -p ./mnt
 
@@ -39,10 +40,10 @@ guestmount -a ./disk.img -m /dev/sda1 mnt
 cd mnt
 mkdir EFI
 mkdir EFI/boot
-mkdir EFI/debian
-mkdir EFI/fedora
-mkdir grub
 mkdir boot
+mkdir grub
+mkdir boot/grub
+mkdir boot/grub2
 cp ../config boot/
 cp ../vmlinuz boot/
 cp ../initramfs.img boot/
@@ -51,11 +52,11 @@ cp ../System.map boot/
 
 cp ../sb/COPYING EFI/boot/COPYING.ventoy
 cp ../sb/grub.efi ../sb/BOOTX64.EFI ../sb/MokManager.efi EFI/boot/
-cp ../grubx64_real.efi EFI/boot/
-
-cp ../sb/grub.cfg grub/
-cp ../sb/grub.cfg EFI/debian
-cp ../grub.cfg EFI/fedora
+cp ../grubx64.efi EFI/boot/grubx64_real.efi 
+#cp ../grub.cfg grub/
+cp ../grub.cfg EFI/boot/
+#cp ../grub.cfg boot/grub/
+#cp ../grub.cfg boot/grub2/
 cp ../sb/ENROLL_THIS_KEY_IN_MOKMANAGER.cer .
 cd ..
 guestunmount mnt 
