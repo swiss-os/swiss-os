@@ -6,8 +6,6 @@ mv -f initramfs-* initramfs.img
 mv -f symvers-* symvers.xz
 mv -f System.map-* System.map
 
-echo https://packages.debian.org/trixie/amd64/grub-efi-amd64-unsigned/download
-#sudo cp /boot/efi/EFI/fedora/grubx64.efi .
 sudo chmod a+rw grub*.efi
 
 dd if=/dev/zero of=disk.img bs=1024k seek=7000 count=0
@@ -49,6 +47,8 @@ cp ../vmlinuz boot/
 cp ../initramfs.img boot/
 cp ../symvers.xz boot/
 cp ../System.map boot/
+
+echo `uname -r` > boot/UPSTREAM.txt
 
 cp ../sb/COPYING EFI/boot/COPYING.ventoy
 cp ../sb/grub.efi ../sb/BOOTX64.EFI ../sb/MokManager.efi EFI/boot/
